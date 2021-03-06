@@ -1,8 +1,11 @@
 from data import db_session
 from data.work import User
 from data.jobs import Jobs
+import datetime as dt
 
 db_session.global_init("db/blogs.db")
+
+print(dt.datetime.now())
 
 
 def add_user(sur, name, age, pos, spec, ad, email):
@@ -27,6 +30,9 @@ def add_jobs(team, job, work, coll, start, is_f):
     jobs.collaborators = coll
     jobs.start_date = start
     jobs.is_finished = is_f
+    db_sess = db_session.create_session()
+    db_sess.add(jobs)
+    db_sess.commit()
 
 
 users = [{
@@ -62,5 +68,14 @@ users = [{
      'speciality': 'research engineer',
      'address': 'module_1',
      'email': 'erbulatov_hamit@mars.org'}]
+jobs = [{
+    'team_leader': 1,
+    'job': 'deployment of residential modules 1 and 2',
+    'work_size': 15,
+    'collaborators': [2, 3],
+    'start_date': dt.datetime.now(),
+    'is_finished': False,
+}]
 
-[add_user(*value.values()) for value in users]
+# [add_user(*value.values()) for value in users]
+[add_jobs(*value.values()) for value in jobs]
